@@ -123,7 +123,7 @@ app.post('/signup', async (req, res) => {
   
   app.get('/members', (req, res) => {
     if (!req.session.username) {
-      return res.redirect('/login');
+      return res.redirect('/');
     }
   
     const imageDir = path.join(__dirname, 'public/images');

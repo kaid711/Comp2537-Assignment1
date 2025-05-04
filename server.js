@@ -18,7 +18,7 @@ app.use(session({
     mongoUrl: process.env.MONGODB_URI,
     dbName: process.env.MONGODB_DATABASE,
     crypto: { secret: process.env.MONGODB_SESSION_SECRET },
-    ttl: 3600
+    ttl: 3600 //session set to expire in 1 hour
   })
 }));
 
@@ -140,10 +140,12 @@ app.post('/signup', async (req, res) => {
   
 //logout page
   app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
+    req.session.destroy(async err => {
       if (err) {
         return res.send("Error logging out");
       }
+      const collection = client.db(process.env.MONGODB_DATABASE).collection('sessions');
+      await collection.deleteOne({ _id: req.sessionID });
       res.redirect('/');
     });
   });

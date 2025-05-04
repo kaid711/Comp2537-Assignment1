@@ -16,6 +16,7 @@ app.use(session({
   saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_URI,
+    dbName: process.env.MONGODB_DATABASE,
     crypto: { secret: process.env.MONGODB_SESSION_SECRET },
     ttl: 3600
   })

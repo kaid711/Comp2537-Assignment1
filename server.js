@@ -22,7 +22,7 @@ app.use(session({
   })
 }));
 
-// Optional test connection
+//test connection to database
 (async () => {
   const client = new MongoClient(process.env.MONGODB_URI);
   try {
@@ -66,6 +66,7 @@ app.get('/signup', (req, res) => {
     `);
 });
 
+//validate with joi
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 
@@ -78,7 +79,7 @@ const signupSchema = Joi.object({
 const client = new MongoClient(process.env.MONGODB_URI);
 let usersCollection;
 
-// Connect once when server starts
+// Connect when server starts
 client.connect().then(() => {
   const db = client.db(process.env.MONGODB_DATABASE);
   usersCollection = db.collection('users');
@@ -167,7 +168,7 @@ app.post('/signup', async (req, res) => {
   app.post('/login', async (req, res) => {
     const { email, password } = req.body;
   
-    // Validate input
+    //validate with joi
     const schema = Joi.object({
       email: Joi.string().email().required(),
       password: Joi.string().required()
@@ -200,7 +201,7 @@ app.post('/signup', async (req, res) => {
     }
   });
   
-  // Handle 404
+  //handle 404
 app.use((req, res) => {
     res.status(404).send(`
       <h1>404 - Page Not Found</h1>
